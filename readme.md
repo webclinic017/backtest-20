@@ -5,8 +5,10 @@ Create a python virtual enviroment
 ```bash
 cd into install directory
 git clone https://github.com/CandidateBlock/backtest.git
-python -m vevn .venv
+python -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
+python main.py
 ```
 
 ## load_cryptoflash_data.py

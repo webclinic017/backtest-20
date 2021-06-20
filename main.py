@@ -48,8 +48,8 @@ class CryptoFlash(bt.Strategy):
 # Create a Data Feed
 data = bt.feeds.GenericCSVData(
     dataname='cryptoflash.csv',
-    fromdate=dt.datetime(2021, 6, 10),
-    todate=dt.datetime(2021, 6, 17),
+    # fromdate=dt.datetime(2021, 6, 10),
+    # todate=dt.datetime(2021, 6, 17),
     dtformat='%Y-%m-%d %H:%M:%S',
     timeframe=bt.TimeFrame.Minutes,
     compression=60,
@@ -74,6 +74,6 @@ results = cerebro.run()
 strat = results[0]
 print(f'Ending Portfolio Value: {cerebro.broker.getvalue():,.2f}')
 print(f'Current Cash Value: {cerebro.broker.get_cash():,.2f}')
-# for e in strat.analyzers:
-#     e.print()
+for e in strat.analyzers:
+    e.print()
 cerebro.plot()
