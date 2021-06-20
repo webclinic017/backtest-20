@@ -4,6 +4,7 @@ Create a python virtual enviroment
 
 ```bash
 cd into install directory
+git clone https://github.com/CandidateBlock/backtest.git
 python -m vevn .venv
 pip install -r requirements.txt
 ```
