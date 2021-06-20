@@ -3,8 +3,9 @@
 Create a python virtual enviroment
 
 ```bash
-cd into install directory
+cd into_install_root_directory
 git clone https://github.com/CandidateBlock/backtest.git
+cd backtest
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
