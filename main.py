@@ -5,7 +5,7 @@ import backtrader as bt
 
 
 class FixedSize(bt.Sizer):
-    params = (('stake', 1),)
+    params = (('stake', 25),)
 
     def _getsizing(self, comminfo, cash, data, isbuy):
         return self.params.stake
@@ -17,6 +17,13 @@ class FixedRerverser(FixedSize):
         size = self.p.stake * (1 + (position.size != 0))
         return size
 
+class AllInSize(bt.Sizer):
+    def _getsizing(self, comminfo, cash, data, isbuy):
+        new_size = int(self.broker.getvalue() / data.open[0])
+        existing_pos_size = abs(self.broker.getposition(data).size)
+        # its cumalitive
+        size = existing_pos_size + new_size
+        return size
 
 class CryptoFlash(bt.Strategy):
     def log(self, txt, dt=None):
@@ -34,7 +41,7 @@ class CryptoFlash(bt.Strategy):
     def next(self):
         # Simply log the closing price of the series from the reference
         self.log(
-            f'Open {self.dataopen[0]:,.2f} | Close, {self.dataclose[0]:,.2f}')
+            f'Open {self.dataopen[0]:,.2f} | Close, {self.dataclose[0]:,.2f} | Pos, {self.broker.getposition(self.datas[0]).size:,.2f} | Port, {self.broker.getvalue():,.2f} | Cash, {self.broker.get_cash():,.2f}')
 
         if self.crossover > 0:
             self.buy()
@@ -44,12 +51,11 @@ class CryptoFlash(bt.Strategy):
             self.sell()
             self.log(f'SELL CREATE, {self.dataclose[0]:,.2f}')
 
-
 # Create a Data Feed
 data = bt.feeds.GenericCSVData(
     dataname='cryptoflash.csv',
-    # fromdate=dt.datetime(2021, 6, 10),
-    # todate=dt.datetime(2021, 6, 17),
+    fromdate=dt.datetime(2021, 1, 1, 0, 0, 0),
+    # todate=dt.datetime(2021, 6, 20, 0, 0, 0),
     dtformat='%Y-%m-%d %H:%M:%S',
     timeframe=bt.TimeFrame.Minutes,
     compression=60,
@@ -66,14 +72,16 @@ data = bt.feeds.GenericCSVData(
 cerebro = bt.Cerebro()
 cerebro.broker.set_cash(1000000)
 print(f'Starting Portfolio Value: {cerebro.broker.getvalue():,.2f}')
+print(f'Current Cash Value: {cerebro.broker.get_cash():,.2f}')
 cerebro.adddata(data)
 cerebro.addstrategy(CryptoFlash)
 cerebro.addsizer(FixedRerverser)
+# cerebro.addsizer(AllInSize)
 cerebro.addanalyzer(bt.analyzers.TradeAnalyzer, _name='tradeanalyzer')
 results = cerebro.run()
 strat = results[0]
 print(f'Ending Portfolio Value: {cerebro.broker.getvalue():,.2f}')
 print(f'Current Cash Value: {cerebro.broker.get_cash():,.2f}')
-for e in strat.analyzers:
-    e.print()
+# for e in strat.analyzers:
+#     e.print()
 cerebro.plot()
