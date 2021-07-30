@@ -1,3 +1,5 @@
 matplotlib==3.2.2  # Must be this version for backtrader to plot charts correctly
 pandas
 backtrader
+pyfolio
+ccxt
