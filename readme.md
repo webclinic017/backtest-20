@@ -19,7 +19,13 @@ Shows results in chart and prints porfolio data
 
 ## load_cryptoflash_data.py
 
-__Run this to update data__
+__Run this to update data - cryptoflash.csv__
 
 This downloads data from the CryptoFlash web site for hourly Bitcoin data and then uses pandas to change into csv format complitible with Backtrader.
 It makes the next opening bar level = previous close for Backtrader to use as execution price.
+
+## load_bitmex_data.py
+
+__Run this to update data - bitmex.csv__
+
+This downloads data from the bitmex web site (using ccxt package) for hourly Bitcoin data and then uses pandas to change into csv format complitible with Backtrader.
