@@ -157,7 +157,7 @@ def run_backtest():
 
     # fromdate & todate are commented out as used in testing for shorter data set = quicker run time
     data = bt.feeds.GenericCSVData(
-        dataname='btc_price_history.csv',
+        dataname='backtest/btc_price_history.csv',
         fromdate=datetime.datetime(2014, 6, 1, 0, 0, 0),
         # todate=datetime.datetime(2016, 1, 1, 0, 0, 0),
         # timeframe=bt.TimeFrame.Minutes,
@@ -211,7 +211,7 @@ def run_backtest():
     # cerebro.plot()
 
     figure = cerebro.plot()[0][0]
-    figure.savefig('plot_outright.png')
+    figure.savefig('backtest/plot_outright.png')
 
     results_dic = {
         'start_portfolio': start_portfolio_value,
